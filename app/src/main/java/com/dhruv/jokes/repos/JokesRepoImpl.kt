@@ -11,6 +11,7 @@ class JokesRepoImpl @Inject constructor(private val apiService: ApiService): Jok
         if (response.isSuccessful && jokesResponse != null) {
             return jokesResponse.jokes
         }
+
         return emptyList()
     }
 }
