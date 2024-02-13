@@ -16,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.dhruv.jokes.ui.navigation.AppNavigation
 import com.dhruv.jokes.ui.theme.JokesTheme
 import com.dhruv.jokes.ui.viewmodel.JokesViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -28,15 +29,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             JokesTheme {
-                Column(
-                    modifier = Modifier.fillMaxSize(),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center
-                ) {
-                    Button(onClick = { viewModel.getJokes() }) {
-                        Text(text = "Get Jokes")
-                    }
-                }
+                AppNavigation()
             }
         }
     }

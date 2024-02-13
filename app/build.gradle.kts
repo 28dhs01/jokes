@@ -80,4 +80,8 @@ dependencies {
     ksp(libs.moshi.kotlin.codegen)
     implementation(libs.logging.interceptor)
 
+//    navigation
+    implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.hilt.navigation.compose)
+
 }
