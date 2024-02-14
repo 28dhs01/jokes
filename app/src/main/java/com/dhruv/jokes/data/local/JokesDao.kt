@@ -9,7 +9,7 @@ import androidx.room.Query
 @Dao
 interface JokesDao {
 
-    @Query("Select * from jokes_entity")
+    @Query("Select * from jokes_entity order by id desc")
     suspend fun getJokesList(): List<JokesEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

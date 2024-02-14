@@ -37,7 +37,7 @@ fun ProgrammingJokesScreen(
     }
     val jokesUiState = viewModel.jokes.collectAsState().value
     Scaffold(topBar = {
-        CenterAlignedTopAppBar(title = { Text(text = "Programming Jokes") })
+        CenterAlignedTopAppBar(title = { Text(text = "Jokes") })
     }) { innerPadding ->
         when (jokesUiState) {
             is UiState.Loading -> {
