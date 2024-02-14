@@ -2,7 +2,6 @@ package com.dhruv.jokes.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.dhruv.jokes.data.model.JokeOrSetup
 import com.dhruv.jokes.repos.JokesRepo
 import com.dhruv.jokes.ui.screens.UiState
 import com.dhruv.jokes.utils.debugLog

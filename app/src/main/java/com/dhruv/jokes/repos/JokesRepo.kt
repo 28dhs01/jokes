@@ -1,7 +1,9 @@
 package com.dhruv.jokes.repos
 
-import com.dhruv.jokes.data.model.JokeOrSetup
+import android.content.Context
+import com.dhruv.jokes.data.local.JokesEntity
+
 
 interface JokesRepo {
-    suspend fun getJokes(genre: String,amount: Int): List<JokeOrSetup>
+    suspend fun getJokes(genre: String,amount: Int): List<JokesEntity>
 }

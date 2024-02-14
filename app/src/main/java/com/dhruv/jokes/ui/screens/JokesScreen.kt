@@ -3,17 +3,17 @@ package com.dhruv.jokes.ui.screens
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
+import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -21,9 +21,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.dhruv.jokes.data.model.JokeOrSetup
+import com.dhruv.jokes.data.local.JokesEntity
 import com.dhruv.jokes.ui.viewmodel.JokesViewModel
 import com.dhruv.jokes.utils.CustomRowWith2Values
+import com.dhruv.jokes.utils.ErrorMessage
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -36,7 +37,7 @@ fun ProgrammingJokesScreen(
     }
     val jokesUiState = viewModel.jokes.collectAsState().value
     Scaffold(topBar = {
-        TopAppBar(title = { Text(text = "Programming Jokes") })
+        CenterAlignedTopAppBar(title = { Text(text = "Programming Jokes") })
     }) { innerPadding ->
         when (jokesUiState) {
             is UiState.Loading -> {
@@ -56,25 +57,29 @@ fun ProgrammingJokesScreen(
                     verticalArrangement = Arrangement.Center
                 ) {
                     val error = jokesUiState.message
-                    Text(
-                        modifier = Modifier
-                            .padding(horizontal = 16.dp),
-                        text = error,
-                        color = MaterialTheme.colorScheme.error
-                    )
+                    ErrorMessage(error = error)
                 }
             }
 
             is UiState.Success -> {
-                LazyColumn(modifier = modifier.padding(innerPadding)) {
-                    items(jokesUiState.jokes, key = { joke ->
-                        joke.id
-                    }) { joke ->
-                        JokeItem(joke = joke)
+                if (jokesUiState.jokes.isEmpty()) {
+                    Column(
+                        modifier = Modifier.fillMaxSize(),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center
+                    ) {
+                        ErrorMessage(error = "No joke stored locally and your internet is also not available")
+                    }
+                }else{
+                    LazyColumn(modifier = modifier.padding(innerPadding)) {
+                        items(jokesUiState.jokes, key = { joke ->
+                            joke.id
+                        }) { joke ->
+                            JokeItem(joke = joke)
+                        }
                     }
                 }
             }
-
             else -> {}
         }
 
@@ -84,7 +89,7 @@ fun ProgrammingJokesScreen(
 }
 
 @Composable
-fun JokeItem(joke: JokeOrSetup) {
+fun JokeItem(joke: JokesEntity) {
     if (joke.type == "single") {
         joke.joke?.let {
             Card(
