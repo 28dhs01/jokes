@@ -16,6 +16,9 @@ class JokesViewModel @Inject constructor(private val jokesRepo: JokesRepo): View
 
     private val _jokes: MutableStateFlow<UiState> = MutableStateFlow(UiState.Initial)
     val jokes = _jokes.asStateFlow()
+
+    private val _bookmarkedJokes: MutableStateFlow<UiState> = MutableStateFlow(UiState.Initial)
+    val bookmarkedJokes = _bookmarkedJokes.asStateFlow()
     fun getJokes(genre: String = "Any", amount: Int = 10) {
         viewModelScope.launch {
             _jokes.value = UiState.Loading
@@ -33,6 +36,25 @@ class JokesViewModel @Inject constructor(private val jokesRepo: JokesRepo): View
     fun updateBookmark(id: Int, bookmarked: Boolean) {
         viewModelScope.launch {
             jokesRepo.updateBookmark(id, bookmarked)
+        }
+    }
+
+    fun getBookmarksOnly() {
+        _bookmarkedJokes.value = UiState.Loading
+        viewModelScope.launch {
+                try {
+                jokesRepo.getBookmarksOnly().collect{jokesList->
+                    _bookmarkedJokes.value = UiState.Success(jokes = jokesList)
+                }
+            } catch (e: Exception) {
+                _bookmarkedJokes.value = UiState.Error(e.message.toString())
+            }
+        }
+    }
+
+    fun deleteAllJokes() {
+        viewModelScope.launch {
+            jokesRepo.deleteAllJokes()
         }
     }
 }

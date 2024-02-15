@@ -24,6 +24,9 @@ interface JokesDao {
     @Query(" Update jokes_entity set isBookmarked = :isBookmarked where id = :jokeId")
     suspend fun updateBookmark(jokeId: Int, isBookmarked: Boolean)
 
+    @Query ("Select * from jokes_entity where isBookmarked = 1")
+    fun getBookmarksOnly(): Flow<List<JokesEntity>>
+
     @Delete
     suspend fun deleteJoke(jokesEntity: JokesEntity)
 

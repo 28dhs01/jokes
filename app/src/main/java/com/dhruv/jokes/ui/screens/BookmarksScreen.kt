@@ -1,5 +1,6 @@
 package com.dhruv.jokes.ui.screens
 
+
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -27,14 +28,14 @@ import com.dhruv.jokes.utils.CustomRowWith2Values
 import com.dhruv.jokes.utils.ErrorMessage
 
 @Composable
-fun JokesScreen(
+fun BookmarksScreen(
     modifier: Modifier = Modifier,
     viewModel: JokesViewModel = hiltViewModel()
 ) {
     LaunchedEffect(key1 = Unit) {
-        viewModel.getJokes()
+        viewModel.getBookmarksOnly()
     }
-    val jokesUiState = viewModel.jokes.collectAsState().value
+    val jokesUiState = viewModel.bookmarkedJokes.collectAsState().value
     when (jokesUiState) {
         is UiState.Loading -> {
             Column(
@@ -64,14 +65,14 @@ fun JokesScreen(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center
                 ) {
-                    ErrorMessage(error = "No joke stored locally and your internet is also not available")
+                    ErrorMessage(error = "You haven't bookmarked any joke")
                 }
             } else {
                 LazyColumn(modifier = modifier) {
                     items(jokesUiState.jokes, key = { joke ->
                         joke.id
                     }) { joke ->
-                        JokeItem(joke = joke) { isBookmarked ->
+                        BookmarkedJokeItem(joke = joke) { isBookmarked ->
                             viewModel.updateBookmark(joke.id, isBookmarked)
                         }
                     }
@@ -86,7 +87,7 @@ fun JokesScreen(
 }
 
 @Composable
-fun JokeItem(joke: JokesEntity, updateBookmark: (Boolean) -> Unit) {
+fun BookmarkedJokeItem(joke: JokesEntity, updateBookmark: (Boolean) -> Unit) {
     if (joke.type == "single") {
         joke.joke?.let {
             Card(

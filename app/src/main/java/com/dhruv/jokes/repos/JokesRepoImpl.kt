@@ -35,4 +35,12 @@ class JokesRepoImpl @Inject constructor(private val apiService: ApiService,priva
     override suspend fun updateBookmark(id: Int, bookmarked: Boolean) {
         jokesDb.jokesDao().updateBookmark(jokeId = id, isBookmarked = bookmarked)
     }
+
+    override suspend fun getBookmarksOnly(): Flow<List<JokesEntity>> {
+        return jokesDb.jokesDao().getBookmarksOnly()
+    }
+
+    override suspend fun deleteAllJokes() {
+        jokesDb.jokesDao().deleteAllJokes()
+    }
 }

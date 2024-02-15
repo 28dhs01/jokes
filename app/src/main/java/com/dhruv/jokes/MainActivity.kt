@@ -5,17 +5,11 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Home
+import com.dhruv.jokes.ui.destinations.BottomNavigation
+import com.dhruv.jokes.ui.destinations.BottomNavigationItem
 import com.dhruv.jokes.ui.navigation.AppNavigation
 import com.dhruv.jokes.ui.theme.JokesTheme
 import com.dhruv.jokes.ui.viewmodel.JokesViewModel
@@ -29,7 +23,12 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             JokesTheme {
-                AppNavigation()
+                val bottomNavItems = listOf(
+                    BottomNavigationItem(title = "Home", selectedIcon = R.drawable.baseline_home_24, unselectedIcon = R.drawable.outline_home_24),
+                    BottomNavigationItem(title = "Bookmarks", selectedIcon = R.drawable.baseline_bookmarks_24, unselectedIcon = R.drawable.outline_bookmarks_24),
+                    BottomNavigationItem(title = "Delete", selectedIcon = R.drawable.baseline_delete_24, unselectedIcon = R.drawable.baseline_delete_outline_24)
+                )
+                BottomNavigation(bottomNavItems = bottomNavItems)
             }
         }
     }
