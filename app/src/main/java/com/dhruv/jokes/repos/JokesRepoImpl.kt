@@ -40,7 +40,7 @@ class JokesRepoImpl @Inject constructor(private val apiService: ApiService,priva
         return jokesDb.jokesDao().getBookmarksOnly()
     }
 
-    override suspend fun deleteAllJokes() {
-        jokesDb.jokesDao().deleteAllJokes()
+    override suspend fun deleteUnbookmarkedJokes() {
+        jokesDb.jokesDao().deleteUnbookmarkedJokes()
     }
 }

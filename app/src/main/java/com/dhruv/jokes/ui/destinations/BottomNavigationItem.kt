@@ -1,25 +1,35 @@
 package com.dhruv.jokes.ui.destinations
 
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.rememberNavController
-import com.dhruv.jokes.data.local.JokesEntity
 import com.dhruv.jokes.ui.navigation.AppNavigation
 import com.dhruv.jokes.ui.viewmodel.JokesViewModel
 
@@ -40,14 +50,28 @@ fun BottomNavigation(
         mutableIntStateOf(0)
     }
     val navController = rememberNavController()
+    var searchText by remember { mutableStateOf(TextFieldValue()) }
 
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(title = {
-                Text(
-                    text = "Jokes",
-                    style = MaterialTheme.typography.headlineLarge,
-                    fontWeight = FontWeight.Bold
+                TextField(
+                    value = searchText,
+                    onValueChange = { searchText = it },
+                    modifier = Modifier
+                        .padding(8.dp)
+                        .clip(CircleShape)
+                        .border(width = 1.dp, shape = CircleShape, color = MaterialTheme.colorScheme.onSurface)
+                        .fillMaxWidth(),
+                    placeholder = { Text("Search") },
+                    singleLine = true,
+                    textStyle = LocalTextStyle.current.copy(color = MaterialTheme.colorScheme.onSurface),
+                    leadingIcon = {
+                        Icon(
+                            imageVector = Icons.Default.Search,
+                            contentDescription = "Search Icon"
+                        )
+                    }
                 )
             })
         },
@@ -55,16 +79,16 @@ fun BottomNavigation(
             BottomAppBar {
                 bottomNavItems.forEachIndexed { index, bottomItem ->
                     NavigationBarItem(
-                        label = { Text(text = bottomItem.title)},
+                        label = { Text(text = bottomItem.title) },
                         selected = index == selectedIndex,
                         onClick = {
                             navController.popBackStack()
                             selectedIndex = index
-                            if( selectedIndex == 1 ){
+                            if (selectedIndex == 1) {
                                 navController.navigate(TopLevelDestination.Bookmarks.route)
-                            }else if( selectedIndex == 2 ){
+                            } else if (selectedIndex == 2) {
                                 navController.navigate(TopLevelDestination.Delete.route)
-                            }else{
+                            } else {
                                 navController.navigate(TopLevelDestination.Home.route)
                             }
                         },

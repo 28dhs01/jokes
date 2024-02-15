@@ -52,9 +52,9 @@ class JokesViewModel @Inject constructor(private val jokesRepo: JokesRepo): View
         }
     }
 
-    fun deleteAllJokes() {
+    fun deleteUnbookmarkedJokes() {
         viewModelScope.launch {
-            jokesRepo.deleteAllJokes()
+            jokesRepo.deleteUnbookmarkedJokes()
         }
     }
 }

@@ -5,8 +5,6 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import androidx.room.Update
-import androidx.room.Upsert
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -30,7 +28,7 @@ interface JokesDao {
     @Delete
     suspend fun deleteJoke(jokesEntity: JokesEntity)
 
-    @Query("Delete from jokes_entity")
-    suspend fun deleteAllJokes()
+    @Query("Delete from jokes_entity where isBookmarked = 0")
+    suspend fun deleteUnbookmarkedJokes()
 
 }
