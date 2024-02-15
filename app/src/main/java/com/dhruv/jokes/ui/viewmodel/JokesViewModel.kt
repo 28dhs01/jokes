@@ -20,12 +20,19 @@ class JokesViewModel @Inject constructor(private val jokesRepo: JokesRepo): View
         viewModelScope.launch {
             _jokes.value = UiState.Loading
             try {
-                val jokesFromRepo = jokesRepo.getJokes(genre = genre, amount = amount)
-                _jokes.value = UiState.Success(jokesFromRepo)
+               jokesRepo.getJokes(genre = genre, amount = amount).collect{jokesList->
+                    _jokes.value = UiState.Success(jokesList)
+                }
             }catch (e: Exception){
                 _jokes.value = UiState.Error(e.message.toString())
                 debugLog(e.message.toString())
             }
+        }
+    }
+
+    fun updateBookmark(id: Int, bookmarked: Boolean) {
+        viewModelScope.launch {
+            jokesRepo.updateBookmark(id, bookmarked)
         }
     }
 }

@@ -10,5 +10,6 @@ data class JokesEntity(
     val type: String,
     val setup: String?,
     val punchline: String?,
-    val joke: String?
+    val joke: String?,
+    val isBookmarked: Boolean = false
 )

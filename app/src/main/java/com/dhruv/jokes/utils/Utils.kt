@@ -10,16 +10,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import java.lang.Error
 
 fun debugLog(message: String) {
     println("DEBUG: $message")
 }
 
 @Composable
-fun CustomRowWith2Values(value1: String, value2: String) {
+fun CustomRowWith2Values(modifier: Modifier = Modifier, value1: String, value2: String) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {

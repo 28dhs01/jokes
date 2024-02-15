@@ -5,18 +5,24 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
+import androidx.room.Upsert
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface JokesDao {
-
-    @Query("Select * from jokes_entity order by id desc")
-    suspend fun getJokesList(): List<JokesEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertJoke(jokesEntity: JokesEntity)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertJokesList(jokesEntity: List<JokesEntity>)
+
+    @Query("Select * from jokes_entity order by id desc")
+    fun getJokesList(): Flow<List<JokesEntity>>
+
+    @Query(" Update jokes_entity set isBookmarked = :isBookmarked where id = :jokeId")
+    suspend fun updateBookmark(jokeId: Int, isBookmarked: Boolean)
 
     @Delete
     suspend fun deleteJoke(jokesEntity: JokesEntity)
