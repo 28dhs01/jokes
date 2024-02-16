@@ -43,4 +43,8 @@ class JokesRepoImpl @Inject constructor(private val apiService: ApiService,priva
     override suspend fun deleteUnbookmarkedJokes() {
         jokesDb.jokesDao().deleteUnbookmarkedJokes()
     }
+
+    override suspend fun deleteJoke(id: Int) {
+        jokesDb.jokesDao().deleteJoke(id)
+    }
 }

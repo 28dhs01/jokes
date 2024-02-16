@@ -19,6 +19,7 @@ class JokesViewModel @Inject constructor(private val jokesRepo: JokesRepo): View
 
     private val _bookmarkedJokes: MutableStateFlow<UiState> = MutableStateFlow(UiState.Initial)
     val bookmarkedJokes = _bookmarkedJokes.asStateFlow()
+
     fun getJokes(genre: String = "Any", amount: Int = 10) {
         viewModelScope.launch {
             _jokes.value = UiState.Loading
@@ -55,6 +56,16 @@ class JokesViewModel @Inject constructor(private val jokesRepo: JokesRepo): View
     fun deleteUnbookmarkedJokes() {
         viewModelScope.launch {
             jokesRepo.deleteUnbookmarkedJokes()
+        }
+    }
+
+    fun deleteJoke(id: Int){
+        viewModelScope.launch {
+            try {
+                jokesRepo.deleteJoke(id = id)
+            } catch (e: Exception) {
+                debugLog("Error to delete joke with id $id with msg ${e.message}")
+            }
         }
     }
 }

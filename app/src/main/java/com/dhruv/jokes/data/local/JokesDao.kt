@@ -25,8 +25,8 @@ interface JokesDao {
     @Query ("Select * from jokes_entity where isBookmarked = 1")
     fun getBookmarksOnly(): Flow<List<JokesEntity>>
 
-    @Delete
-    suspend fun deleteJoke(jokesEntity: JokesEntity)
+    @Query("Delete from jokes_entity where id = :id")
+    suspend fun deleteJoke(id: Int)
 
     @Query("Delete from jokes_entity where isBookmarked = 0")
     suspend fun deleteUnbookmarkedJokes()

@@ -9,4 +9,5 @@ interface JokesRepo {
     suspend fun updateBookmark(id: Int, bookmarked: Boolean)
     suspend fun getBookmarksOnly(): Flow<List<JokesEntity>>
     suspend fun deleteUnbookmarkedJokes()
+    suspend fun deleteJoke(id: Int)
 }
