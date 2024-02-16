@@ -85,7 +85,7 @@ fun JokesScreen(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center
                 ) {
-                    ErrorMessage(error = "It seems no joke is stored locally! Check your bookmarked jokes")
+                    ErrorMessage(error = "It seems no joke is stored locally! Check your bookmarked jokes.\nIf nothing works you need to relaunch the app again.")
                 }
             } else {
                 LazyColumn(modifier = modifier) {

@@ -1,9 +1,12 @@
 package com.dhruv.jokes.ui.destinations
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Menu
 import androidx.compose.material.icons.outlined.Notifications
@@ -21,6 +24,8 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Outline
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
@@ -28,6 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.rememberNavController
+import com.dhruv.jokes.R
 import com.dhruv.jokes.ui.navigation.AppNavigation
 import com.dhruv.jokes.ui.viewmodel.JokesViewModel
 import com.dhruv.jokes.utils.toastMsg
@@ -76,12 +82,10 @@ fun BottomNavigation(
                     }
                 },
                 navigationIcon = {
-                    Icon(
-                        modifier = Modifier.clickable {
-                            toastMsg(context, "not implemented yet")
-                        },
-                        imageVector = Icons.Outlined.Menu,
-                        contentDescription = "menu"
+                    Image(
+                        modifier = Modifier.size(30.dp).clip(CircleShape),
+                        painter = painterResource(id = R.drawable.ic_app),
+                        contentDescription = "app icon"
                     )
                 }
 
