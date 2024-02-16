@@ -37,6 +37,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -45,6 +46,7 @@ import com.dhruv.jokes.data.local.JokesEntity
 import com.dhruv.jokes.ui.viewmodel.JokesViewModel
 import com.dhruv.jokes.utils.CustomRowWith2Values
 import com.dhruv.jokes.utils.ErrorMessage
+import com.dhruv.jokes.utils.toastMsg
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -92,10 +94,11 @@ fun BookmarksScreen(
                     items(jokesUiState.jokes, key = { joke ->
                         joke.id
                     }) { joke ->
-
+                        val context = LocalContext.current
                         val dismissState = rememberSwipeToDismissBoxState()
                         when (dismissState.currentValue) {
                             SwipeToDismissBoxValue.EndToStart -> {
+                                toastMsg(context = context, msg = "Joke Deleted")
                                 viewModel.deleteJoke(joke.id)
                             }
 
@@ -140,6 +143,7 @@ fun BookmarksScreen(
                             }
                         ) {
                             BookmarkedJokeItem(joke = joke) { isBookmarked ->
+                                toastMsg(context = context, msg = "Joke Unbookmarked")
                                 viewModel.updateBookmark(joke.id, isBookmarked)
                             }
                         }

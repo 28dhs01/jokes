@@ -1,5 +1,7 @@
 package com.dhruv.jokes.utils
 
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -39,4 +41,8 @@ fun ErrorMessage(error: String){
         text = error,
         color = MaterialTheme.colorScheme.error
     )
+}
+
+fun toastMsg(context: Context, msg: String){
+    Toast.makeText(context,msg, Toast.LENGTH_SHORT).show()
 }

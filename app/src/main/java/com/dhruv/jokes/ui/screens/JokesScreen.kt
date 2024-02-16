@@ -1,5 +1,6 @@
 package com.dhruv.jokes.ui.screens
 
+import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.TweenSpec
@@ -36,6 +37,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -44,6 +46,7 @@ import com.dhruv.jokes.data.local.JokesEntity
 import com.dhruv.jokes.ui.viewmodel.JokesViewModel
 import com.dhruv.jokes.utils.CustomRowWith2Values
 import com.dhruv.jokes.utils.ErrorMessage
+import com.dhruv.jokes.utils.toastMsg
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -87,14 +90,16 @@ fun JokesScreen(
                     items(jokesUiState.jokes, key = { joke ->
                         joke.id
                     }) { joke ->
-
+                        val context = LocalContext.current
                         val dismissState = rememberSwipeToDismissBoxState()
                         when (dismissState.currentValue) {
                             SwipeToDismissBoxValue.EndToStart -> {
+                                toastMsg(context = context, msg = "Joke Deleted")
                                 viewModel.deleteJoke(joke.id)
                             }
 
                             SwipeToDismissBoxValue.StartToEnd -> {
+                                toastMsg(context = context, msg = "Joke Bookmarked")
                                 viewModel.updateBookmark(id = joke.id, bookmarked = true)
                             }
 
@@ -149,12 +154,13 @@ fun JokesScreen(
                         ) {
                             AnimatedVisibility(
                                 visible = !joke.isBookmarked,
-                                exit = fadeOut(animationSpec = TweenSpec(durationMillis = 10)) + shrinkVertically(
-                                    animationSpec = TweenSpec(durationMillis = 10)
+                                exit = fadeOut(animationSpec = TweenSpec(durationMillis = 50)) + shrinkVertically(
+                                    animationSpec = TweenSpec(durationMillis = 50)
                                 )
                             ) {
                                 JokeItem(joke = joke) { isBookmarked ->
                                     viewModel.updateBookmark(joke.id, isBookmarked)
+                                    toastMsg(context = context, msg = "Joke Bookmarked")
                                 }
                             }
                         }
