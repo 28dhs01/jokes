@@ -1,36 +1,36 @@
 package com.dhruv.jokes.ui.destinations
 
-import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.outlined.Menu
+import androidx.compose.material.icons.outlined.Notifications
+import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.BottomAppBar
-import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.LocalTextStyle
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.rememberNavController
 import com.dhruv.jokes.ui.navigation.AppNavigation
 import com.dhruv.jokes.ui.viewmodel.JokesViewModel
+import com.dhruv.jokes.utils.toastMsg
 
 data class BottomNavigationItem(
     val title: String,
@@ -49,30 +49,43 @@ fun BottomNavigation(
         mutableIntStateOf(0)
     }
     val navController = rememberNavController()
-    var searchText by remember { mutableStateOf(TextFieldValue()) }
 
     Scaffold(
         topBar = {
-            CenterAlignedTopAppBar(title = {
-                TextField(
-                    value = searchText,
-                    onValueChange = { searchText = it },
-                    modifier = Modifier
-                        .padding(8.dp)
-                        .clip(CircleShape)
-                        .border(width = 1.dp, shape = CircleShape, color = MaterialTheme.colorScheme.onSurface)
-                        .fillMaxWidth(),
-                    placeholder = { Text("Search") },
-                    singleLine = true,
-                    textStyle = LocalTextStyle.current.copy(color = MaterialTheme.colorScheme.onSurface),
-                    leadingIcon = {
+            val context = LocalContext.current
+            TopAppBar(modifier = Modifier.padding(horizontal = 16.dp),
+                title = {
+                    Text(text = "Jokes", fontFamily = FontFamily.Cursive, fontSize = 50.sp)
+                },
+                actions = {
+                    Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
                         Icon(
-                            imageVector = Icons.Default.Search,
+                            modifier = Modifier.clickable {
+                                toastMsg(context, "not implemented yet")
+                            },
+                            imageVector = Icons.Outlined.Notifications,
+                            contentDescription = "notification"
+                        )
+                        Icon(
+                            modifier = Modifier.clickable {
+                                toastMsg(context, "not implemented yet")
+                            },
+                            imageVector = Icons.Outlined.Search,
                             contentDescription = "Search Icon"
                         )
                     }
-                )
-            })
+                },
+                navigationIcon = {
+                    Icon(
+                        modifier = Modifier.clickable {
+                            toastMsg(context, "not implemented yet")
+                        },
+                        imageVector = Icons.Outlined.Menu,
+                        contentDescription = "menu"
+                    )
+                }
+
+            )
         },
         bottomBar = {
             BottomAppBar {
@@ -102,6 +115,10 @@ fun BottomNavigation(
                 }
             }
         }) { innerPadding ->
-        AppNavigation(viewModel= viewModel,navController = navController, modifier = Modifier.padding(innerPadding))
+        AppNavigation(
+            viewModel = viewModel,
+            navController = navController,
+            modifier = Modifier.padding(innerPadding)
+        )
     }
 }

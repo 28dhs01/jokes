@@ -1,30 +1,21 @@
 package com.dhruv.jokes.ui.screens
 
 
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Delete
-import androidx.compose.material3.Card
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconToggleButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SwipeToDismissBox
 import androidx.compose.material3.SwipeToDismissBoxValue
 import androidx.compose.material3.rememberSwipeToDismissBoxState
@@ -38,14 +29,11 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.dhruv.jokes.R
-import com.dhruv.jokes.data.local.JokesEntity
 import com.dhruv.jokes.ui.viewmodel.JokesViewModel
-import com.dhruv.jokes.utils.CustomRowWith2Values
 import com.dhruv.jokes.utils.ErrorMessage
+import com.dhruv.jokes.utils.LoadIndicator
 import com.dhruv.jokes.utils.toastMsg
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -65,7 +53,7 @@ fun BookmarksScreen(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
-                CircularProgressIndicator()
+                LoadIndicator()
             }
         }
 
@@ -87,7 +75,7 @@ fun BookmarksScreen(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center
                 ) {
-                    ErrorMessage(error = "You don't have any bookmarks")
+                    ErrorMessage(error = "You don't have any bookmarks!")
                 }
             } else {
                 LazyColumn(modifier = modifier) {
@@ -142,7 +130,7 @@ fun BookmarksScreen(
                                 }
                             }
                         ) {
-                            BookmarkedJokeItem(joke = joke) { isBookmarked ->
+                            JokeItem(joke = joke) { isBookmarked ->
                                 toastMsg(context = context, msg = "Joke Unbookmarked")
                                 viewModel.updateBookmark(joke.id, isBookmarked)
                             }
@@ -155,73 +143,4 @@ fun BookmarksScreen(
         else -> {}
     }
 
-
-}
-
-@Composable
-fun BookmarkedJokeItem(joke: JokesEntity, updateBookmark: (Boolean) -> Unit) {
-    if (joke.type == "single") {
-        joke.joke?.let {
-            Card(
-                modifier = Modifier
-                    .padding(16.dp)
-                    .fillMaxWidth()
-            ) {
-                Row(
-                    modifier = Modifier
-                        .background(color = MaterialTheme.colorScheme.primaryContainer)
-                        .padding(8.dp)
-                ) {
-                    CustomRowWith2Values(
-                        modifier = Modifier.weight(1f),
-                        value1 = "Joke",
-                        value2 = joke.joke
-                    )
-                    IconToggleButton(checked = joke.isBookmarked, onCheckedChange = { value ->
-                        updateBookmark(value)
-                    }) {
-                        Icon(
-                            painter = if (joke.isBookmarked) painterResource(id = R.drawable.baseline_bookmark_added_24) else painterResource(
-                                id = R.drawable.baseline_bookmark_add_24
-                            ), contentDescription = "bookmark"
-                        )
-                    }
-                }
-            }
-
-        }
-    } else {
-        joke.setup?.let { setup ->
-            Card(
-                modifier = Modifier
-                    .padding(16.dp)
-                    .fillMaxWidth()
-            ) {
-                Row(
-                    modifier = Modifier
-                        .background(color = MaterialTheme.colorScheme.primaryContainer)
-                        .padding(8.dp)
-                ) {
-                    Column(modifier = Modifier.weight(1f)) {
-                        CustomRowWith2Values(value1 = "Setup", value2 = setup)
-                        joke.punchline?.let { punchline ->
-                            CustomRowWith2Values(value1 = "Punchline", value2 = punchline)
-                        }
-                    }
-                    IconToggleButton(checked = joke.isBookmarked, onCheckedChange = { value ->
-                        updateBookmark(value)
-                    }) {
-                        Icon(
-                            painter = if (joke.isBookmarked) painterResource(id = R.drawable.baseline_bookmark_added_24) else painterResource(
-                                id = R.drawable.baseline_bookmark_add_24
-                            ), contentDescription = "bookmark"
-                        )
-                    }
-
-                }
-
-            }
-
-        }
-    }
 }

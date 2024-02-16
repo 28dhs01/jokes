@@ -30,16 +30,12 @@ fun DeleteScreen(
                 },
                 title = {
                     Text(
-                        text = "Delete",
-                        color = MaterialTheme.colorScheme.error,
-                        fontWeight = FontWeight.Bold
+                        text = "Delete Unbookmarked Jokes?",
                     )
                 },
                 text = {
                     Text(
-                        text = "Delete Unbookmarked Jokes?",
-                        color = MaterialTheme.colorScheme.error,
-                        style = MaterialTheme.typography.bodyLarge
+                        text = "This will delete all the unbookmarked jokes from the device.",
                     )
                 },
                 dismissButton = {

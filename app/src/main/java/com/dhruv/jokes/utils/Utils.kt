@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -45,4 +46,9 @@ fun ErrorMessage(error: String){
 
 fun toastMsg(context: Context, msg: String){
     Toast.makeText(context,msg, Toast.LENGTH_SHORT).show()
+}
+
+@Composable
+fun LoadIndicator(modifier: Modifier = Modifier) {
+    LinearProgressIndicator()
 }

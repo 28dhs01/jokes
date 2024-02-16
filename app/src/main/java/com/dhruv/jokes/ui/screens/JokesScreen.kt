@@ -1,6 +1,5 @@
 package com.dhruv.jokes.ui.screens
 
-import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.TweenSpec
@@ -21,13 +20,13 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material3.Card
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconToggleButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SwipeToDismissBox
 import androidx.compose.material3.SwipeToDismissBoxValue
+import androidx.compose.material3.Text
 import androidx.compose.material3.rememberSwipeToDismissBoxState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -39,6 +38,7 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.semantics.SemanticsProperties.Text
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.dhruv.jokes.R
@@ -46,6 +46,7 @@ import com.dhruv.jokes.data.local.JokesEntity
 import com.dhruv.jokes.ui.viewmodel.JokesViewModel
 import com.dhruv.jokes.utils.CustomRowWith2Values
 import com.dhruv.jokes.utils.ErrorMessage
+import com.dhruv.jokes.utils.LoadIndicator
 import com.dhruv.jokes.utils.toastMsg
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -61,7 +62,7 @@ fun JokesScreen(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
-                CircularProgressIndicator()
+                LoadIndicator()
             }
         }
 
@@ -135,7 +136,7 @@ fun JokesScreen(
                                         modifier = Modifier
                                             .scale(iconScale)
                                             .align(Alignment.CenterStart),
-                                        painter = painterResource(id = R.drawable.baseline_bookmark_added_24),
+                                        painter = painterResource(id = R.drawable.outline_bookmark_add_24),
                                         contentDescription = "Bookmark",
                                         tint = Color.White
                                     )
@@ -199,7 +200,7 @@ fun JokeItem(joke: JokesEntity, updateBookmark: (Boolean) -> Unit) {
                     }) {
                         Icon(
                             painter = if (joke.isBookmarked) painterResource(id = R.drawable.baseline_bookmark_added_24) else painterResource(
-                                id = R.drawable.baseline_bookmark_add_24
+                                id = R.drawable.outline_bookmark_add_24
                             ), contentDescription = "bookmark"
                         )
                     }
@@ -230,7 +231,7 @@ fun JokeItem(joke: JokesEntity, updateBookmark: (Boolean) -> Unit) {
                     }) {
                         Icon(
                             painter = if (joke.isBookmarked) painterResource(id = R.drawable.baseline_bookmark_added_24) else painterResource(
-                                id = R.drawable.baseline_bookmark_add_24
+                                id = R.drawable.outline_bookmark_add_24
                             ), contentDescription = "bookmark"
                         )
                     }
