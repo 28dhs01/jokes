@@ -16,7 +16,7 @@ interface JokesDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertJokesList(jokesEntity: List<JokesEntity>)
 
-    @Query("Select * from jokes_entity order by id desc")
+    @Query("Select * from jokes_entity where isBookmarked = 0 order by id desc")
     fun getJokesList(): Flow<List<JokesEntity>>
 
     @Query(" Update jokes_entity set isBookmarked = :isBookmarked where id = :jokeId")

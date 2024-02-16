@@ -59,7 +59,11 @@ class JokesViewModel @Inject constructor(private val jokesRepo: JokesRepo): View
 
     fun deleteUnbookmarkedJokes() {
         viewModelScope.launch {
-            jokesRepo.deleteUnbookmarkedJokes()
+            try {
+                jokesRepo.deleteUnbookmarkedJokes()
+            } catch (e: Exception) {
+                debugLog("Error to delete all unbookmarked joke with msg ${e.message}")
+            }
         }
     }
 

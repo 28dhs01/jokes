@@ -17,15 +17,14 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.DismissValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconToggleButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SwipeToDismissBox
 import androidx.compose.material3.SwipeToDismissBoxValue
 import androidx.compose.material3.rememberSwipeToDismissBoxState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -48,9 +47,6 @@ fun JokesScreen(
     modifier: Modifier = Modifier,
     viewModel: JokesViewModel = hiltViewModel()
 ) {
-//    LaunchedEffect(key1 = Unit) {
-//        viewModel.getJokes()
-//    }
     when (val jokesUiState = viewModel.jokes.collectAsState().value) {
         is UiState.Loading -> {
             Column(
@@ -80,7 +76,7 @@ fun JokesScreen(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center
                 ) {
-                    ErrorMessage(error = "No joke stored locally and your internet is also not available")
+                    ErrorMessage(error = "It seems no joke is stored locally!")
                 }
             } else {
                 LazyColumn(modifier = modifier) {
@@ -89,17 +85,23 @@ fun JokesScreen(
                     }) { joke ->
 
                         val dismissState = rememberSwipeToDismissBoxState()
-                        when (dismissState.currentValue == SwipeToDismissBoxValue.EndToStart || dismissState.currentValue == SwipeToDismissBoxValue.StartToEnd) {
-                            true -> {
+                        when (dismissState.currentValue) {
+                            SwipeToDismissBoxValue.EndToStart -> {
                                 viewModel.deleteJoke(joke.id)
-                            }else -> {}
+                            }
+
+                            SwipeToDismissBoxValue.StartToEnd -> {
+                                viewModel.updateBookmark(id = joke.id, bookmarked = true)
+                            }
+
+                            else -> {}
                         }
                         SwipeToDismissBox(state = dismissState, backgroundContent = {
                             // background color
                             val backgroundColor by animateColorAsState(
                                 when (dismissState.targetValue) {
                                     SwipeToDismissBoxValue.EndToStart -> Color.Red.copy(alpha = 0.8f)
-                                    SwipeToDismissBoxValue.StartToEnd -> Color.Red.copy(alpha = 0.8f)
+                                    SwipeToDismissBoxValue.StartToEnd -> Color.Green
                                     else -> Color.White
                                 }, label = ""
                             )
@@ -118,14 +120,26 @@ fun JokesScreen(
                                     .clip(RoundedCornerShape(16.dp))
                                     .background(color = backgroundColor)
                                     .padding(16.dp),
-                                contentAlignment = Alignment.CenterEnd // place the icon at the end (left)
                             ) {
-                                Icon(
-                                    modifier = Modifier.scale(iconScale),
-                                    imageVector = Icons.Outlined.Delete,
-                                    contentDescription = "Delete",
-                                    tint = Color.White
-                                )
+                                if (dismissState.targetValue == SwipeToDismissBoxValue.StartToEnd) {
+                                    Icon(
+                                        modifier = Modifier
+                                            .scale(iconScale)
+                                            .align(Alignment.CenterStart),
+                                        painter = painterResource(id = R.drawable.baseline_bookmark_added_24),
+                                        contentDescription = "Bookmark",
+                                        tint = Color.White
+                                    )
+                                } else {
+                                    Icon(
+                                        modifier = Modifier
+                                            .scale(iconScale)
+                                            .align(Alignment.CenterEnd),
+                                        imageVector = Icons.Outlined.Delete,
+                                        contentDescription = "Delete",
+                                        tint = Color.White
+                                    )
+                                }
                             }
                         }
                         ) {
@@ -153,7 +167,7 @@ fun JokeItem(joke: JokesEntity, updateBookmark: (Boolean) -> Unit) {
                     .padding(16.dp)
                     .fillMaxWidth()
             ) {
-                Row(modifier = Modifier.padding(8.dp)) {
+                Row(modifier = Modifier.background(color = MaterialTheme.colorScheme.primaryContainer).padding(8.dp)) {
                     CustomRowWith2Values(
                         modifier = Modifier.weight(1f),
                         value1 = "Joke",
@@ -179,7 +193,7 @@ fun JokeItem(joke: JokesEntity, updateBookmark: (Boolean) -> Unit) {
                     .padding(16.dp)
                     .fillMaxWidth()
             ) {
-                Row(modifier = Modifier.padding(8.dp)) {
+                Row(modifier = Modifier.background(color = MaterialTheme.colorScheme.primaryContainer).padding(8.dp)) {
                     Column(modifier = Modifier.weight(1f)) {
                         CustomRowWith2Values(value1 = "Setup", value2 = setup)
                         joke.punchline?.let { punchline ->
