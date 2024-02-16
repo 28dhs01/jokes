@@ -20,6 +20,10 @@ class JokesViewModel @Inject constructor(private val jokesRepo: JokesRepo): View
     private val _bookmarkedJokes: MutableStateFlow<UiState> = MutableStateFlow(UiState.Initial)
     val bookmarkedJokes = _bookmarkedJokes.asStateFlow()
 
+    init{
+        debugLog("view model created")
+        getJokes()
+    }
     fun getJokes(genre: String = "Any", amount: Int = 10) {
         viewModelScope.launch {
             _jokes.value = UiState.Loading

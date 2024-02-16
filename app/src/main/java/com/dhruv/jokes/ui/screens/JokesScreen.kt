@@ -48,9 +48,9 @@ fun JokesScreen(
     modifier: Modifier = Modifier,
     viewModel: JokesViewModel = hiltViewModel()
 ) {
-    LaunchedEffect(key1 = Unit) {
-        viewModel.getJokes()
-    }
+//    LaunchedEffect(key1 = Unit) {
+//        viewModel.getJokes()
+//    }
     when (val jokesUiState = viewModel.jokes.collectAsState().value) {
         is UiState.Loading -> {
             Column(

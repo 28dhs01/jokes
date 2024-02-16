@@ -103,6 +103,6 @@ fun BottomNavigation(
                 }
             }
         }) { innerPadding ->
-        AppNavigation(navController = navController, modifier = Modifier.padding(innerPadding))
+        AppNavigation(viewModel= viewModel,navController = navController, modifier = Modifier.padding(innerPadding))
     }
 }

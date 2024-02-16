@@ -28,7 +28,7 @@ class MainActivity : ComponentActivity() {
                     BottomNavigationItem(title = "Bookmarks", selectedIcon = R.drawable.baseline_bookmarks_24, unselectedIcon = R.drawable.outline_bookmarks_24),
                     BottomNavigationItem(title = "Delete", selectedIcon = R.drawable.baseline_delete_24, unselectedIcon = R.drawable.baseline_delete_outline_24)
                 )
-                BottomNavigation(bottomNavItems = bottomNavItems)
+                BottomNavigation(viewModel = viewModel, bottomNavItems = bottomNavItems)
             }
         }
     }
