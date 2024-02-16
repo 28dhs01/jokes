@@ -24,7 +24,7 @@ class JokesViewModel @Inject constructor(private val jokesRepo: JokesRepo): View
         debugLog("view model created")
         getJokes()
     }
-    fun getJokes(genre: String = "Any", amount: Int = 10) {
+    private fun getJokes(genre: String = "Any", amount: Int = 10) {
         viewModelScope.launch {
             _jokes.value = UiState.Loading
             try {

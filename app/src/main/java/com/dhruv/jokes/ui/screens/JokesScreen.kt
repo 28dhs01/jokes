@@ -1,7 +1,11 @@
 package com.dhruv.jokes.ui.screens
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.TweenSpec
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -76,7 +80,7 @@ fun JokesScreen(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center
                 ) {
-                    ErrorMessage(error = "It seems no joke is stored locally!")
+                    ErrorMessage(error = "It seems no joke is stored locally! Check your bookmarked jokes")
                 }
             } else {
                 LazyColumn(modifier = modifier) {
@@ -143,8 +147,15 @@ fun JokesScreen(
                             }
                         }
                         ) {
-                            JokeItem(joke = joke) { isBookmarked ->
-                                viewModel.updateBookmark(joke.id, isBookmarked)
+                            AnimatedVisibility(
+                                visible = !joke.isBookmarked,
+                                exit = fadeOut(animationSpec = TweenSpec(durationMillis = 10)) + shrinkVertically(
+                                    animationSpec = TweenSpec(durationMillis = 10)
+                                )
+                            ) {
+                                JokeItem(joke = joke) { isBookmarked ->
+                                    viewModel.updateBookmark(joke.id, isBookmarked)
+                                }
                             }
                         }
                     }
@@ -167,7 +178,11 @@ fun JokeItem(joke: JokesEntity, updateBookmark: (Boolean) -> Unit) {
                     .padding(16.dp)
                     .fillMaxWidth()
             ) {
-                Row(modifier = Modifier.background(color = MaterialTheme.colorScheme.primaryContainer).padding(8.dp)) {
+                Row(
+                    modifier = Modifier
+                        .background(color = MaterialTheme.colorScheme.primaryContainer)
+                        .padding(8.dp)
+                ) {
                     CustomRowWith2Values(
                         modifier = Modifier.weight(1f),
                         value1 = "Joke",
@@ -193,7 +208,11 @@ fun JokeItem(joke: JokesEntity, updateBookmark: (Boolean) -> Unit) {
                     .padding(16.dp)
                     .fillMaxWidth()
             ) {
-                Row(modifier = Modifier.background(color = MaterialTheme.colorScheme.primaryContainer).padding(8.dp)) {
+                Row(
+                    modifier = Modifier
+                        .background(color = MaterialTheme.colorScheme.primaryContainer)
+                        .padding(8.dp)
+                ) {
                     Column(modifier = Modifier.weight(1f)) {
                         CustomRowWith2Values(value1 = "Setup", value2 = setup)
                         joke.punchline?.let { punchline ->
