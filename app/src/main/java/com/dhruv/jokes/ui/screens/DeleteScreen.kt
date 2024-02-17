@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -30,7 +31,9 @@ fun DeleteScreen(
                 },
                 title = {
                     Text(
+                        style = MaterialTheme.typography.bodyLarge,
                         text = "Delete Unbookmarked Jokes?",
+                        fontWeight = FontWeight.SemiBold
                     )
                 },
                 text = {
@@ -39,12 +42,12 @@ fun DeleteScreen(
                     )
                 },
                 dismissButton = {
-                    Button(onClick = { showDialog = false }) {
+                    OutlinedButton(onClick = { showDialog = false }) {
                         Text(text = "Dismiss")
                     }
                 },
                 confirmButton = {
-                    Button(
+                    OutlinedButton(
                         onClick = {
                             // Action when confirm button is clicked
                             viewModel.deleteUnbookmarkedJokes()

@@ -1,13 +1,18 @@
 package com.dhruv.jokes.ui.screens
 
 
+import android.content.Intent
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -16,24 +21,36 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.SwipeToDismissBox
 import androidx.compose.material3.SwipeToDismissBoxValue
+import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.material3.rememberSwipeToDismissBoxState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.dhruv.jokes.ui.viewmodel.JokesViewModel
 import com.dhruv.jokes.utils.ErrorMessage
 import com.dhruv.jokes.utils.LoadIndicator
+import com.dhruv.jokes.utils.VerticalSpacer
 import com.dhruv.jokes.utils.toastMsg
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -42,6 +59,14 @@ fun BookmarksScreen(
     modifier: Modifier = Modifier,
     viewModel: JokesViewModel = hiltViewModel()
 ) {
+    val bottomSheetState = rememberModalBottomSheetState()
+    var showBottomSheet by rememberSaveable {
+        mutableStateOf(false)
+    }
+    var jokeToShare by rememberSaveable {
+        mutableStateOf("")
+    }
+    var coroutineScope = rememberCoroutineScope()
     LaunchedEffect(key1 = Unit) {
         viewModel.getBookmarksOnly()
     }
@@ -132,7 +157,14 @@ fun BookmarksScreen(
                                 }
                             }
                         ) {
-                            JokeItem(joke = joke) { isBookmarked ->
+                            JokeItem(joke = joke, jokePressed = { joke ->
+                                jokeToShare = if (joke.type == "single") {
+                                    "Joke: ${joke.joke}"
+                                } else {
+                                    "Setup: ${joke.setup} \n Punchline: ${joke.punchline}"
+                                }
+                                showBottomSheet = true
+                            }) { isBookmarked ->
                                 toastMsg(context = context, msg = "Joke Unbookmarked")
                                 viewModel.updateBookmark(joke.id, isBookmarked)
                             }
@@ -144,5 +176,50 @@ fun BookmarksScreen(
 
         else -> {}
     }
-
+    val shareLauncher =
+        rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { }
+    if (showBottomSheet) {
+        ModalBottomSheet(
+            onDismissRequest = {
+                showBottomSheet = false
+            },
+            sheetState = bottomSheetState
+        ) {
+            // Sheet content
+            Column(
+                modifier = Modifier,
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                Text(
+                    text = "Share it with your Loved ones!",
+                    textAlign = TextAlign.Center,
+                    style = MaterialTheme.typography.bodyLarge,
+                    fontWeight = FontWeight.SemiBold
+                )
+                VerticalSpacer()
+                Row(
+                    modifier = Modifier
+                        .padding(bottom = 16.dp)
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceEvenly,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    OutlinedButton(onClick = { showBottomSheet = false }) {
+                        Text(text = "Dismiss")
+                    }
+                    OutlinedButton(onClick = {
+                        val intent = Intent(Intent.ACTION_SEND).apply {
+                            type = "text/plain"
+                            putExtra(Intent.EXTRA_TEXT, jokeToShare)
+                        }
+                        val chooser = Intent.createChooser(intent, "Share message via...")
+                        shareLauncher.launch(chooser)
+                    }) {
+                        Text(text = "Share")
+                    }
+                }
+            }
+        }
+    }
 }

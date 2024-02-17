@@ -7,6 +7,7 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -26,7 +27,6 @@ import androidx.compose.material3.IconToggleButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SwipeToDismissBox
 import androidx.compose.material3.SwipeToDismissBoxValue
-import androidx.compose.material3.Text
 import androidx.compose.material3.rememberSwipeToDismissBoxState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -39,7 +39,6 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.semantics.SemanticsProperties.Text
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.dhruv.jokes.R
@@ -180,13 +179,16 @@ fun JokesScreen(
 }
 
 @Composable
-fun JokeItem(joke: JokesEntity, updateBookmark: (Boolean) -> Unit) {
+fun JokeItem(joke: JokesEntity,jokePressed: (JokesEntity)->Unit = {}, updateBookmark: (Boolean) -> Unit) {
     if (joke.type == "single") {
         joke.joke?.let {
             Card(
                 modifier = Modifier
                     .padding(16.dp)
                     .fillMaxWidth()
+                    .clickable {
+                        jokePressed(joke)
+                    }
             ) {
                 Row(
                     modifier = Modifier
@@ -217,6 +219,9 @@ fun JokeItem(joke: JokesEntity, updateBookmark: (Boolean) -> Unit) {
                 modifier = Modifier
                     .padding(16.dp)
                     .fillMaxWidth()
+                    .clickable {
+                        jokePressed(joke)
+                    }
             ) {
                 Row(
                     modifier = Modifier
