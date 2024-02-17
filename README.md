@@ -28,4 +28,4 @@ This project uses [Kotlin Symbol Processing (KSP)](https://kotlinlang.org/docs/k
 1. Visit [Jokes Api](https://sv443.net/jokeapi/v2/) to learn about the api used for this project.
 2. Video Deomo is attached below
    
- https://github.com/28dhs01/jokes/assets/75385295/8e4defba-1b80-4949-b885-09d412063a27
+https://github.com/28dhs01/jokes/assets/75385295/df27f37c-93ee-4910-9668-f670bed3b6b6
