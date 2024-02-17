@@ -67,14 +67,14 @@ fun BottomNavigation(
                     Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
                         Icon(
                             modifier = Modifier.clickable {
-                                toastMsg(context, "not implemented yet")
+                                toastMsg(context, "feature will be added soon")
                             },
                             imageVector = Icons.Outlined.Notifications,
                             contentDescription = "notification"
                         )
                         Icon(
                             modifier = Modifier.clickable {
-                                toastMsg(context, "not implemented yet")
+                                toastMsg(context, "feature will be added soon")
                             },
                             imageVector = Icons.Outlined.Search,
                             contentDescription = "Search Icon"
