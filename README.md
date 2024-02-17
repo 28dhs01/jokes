@@ -1,2 +1,23 @@
-# jokes
+# Jokes
+
+This repository contains the code for Jokes App which is my personal project.
+
+It includes the following popular libraries:
+
+- [Hilt](https://dagger.dev/hilt) - Hilt is a dependency injection library for Android that reduces
+  the boilerplate of doing manual dependency injection in your project.
+  
+- [Room](https://developer.android.com/training/data-storage/room) - Room persistence library
+  provides an abstraction layer over SQLite to allow fluent database access while harnessing the
+  full power of SQLite.
+
+- [Retrofit](https://github.com/square/retrofit) - A type-safe HTTP client for Android and the JVM.
+  
+- [Moshi](https://github.com/square/moshi) - A modern JSON library for Kotlin and Java.
+  
+
+## Annotation Processing
+
+This project uses [Kotlin Symbol Processing (KSP)](https://kotlinlang.org/docs/ksp-overview.html) for annotation processing, which provides faster build times compared to [KAPT]
+
 https://github.com/28dhs01/jokes/assets/75385295/8e4defba-1b80-4949-b885-09d412063a27
