@@ -20,4 +20,8 @@ It includes the following popular libraries:
 
 This project uses [Kotlin Symbol Processing (KSP)](https://kotlinlang.org/docs/ksp-overview.html) for annotation processing, which provides faster build times compared to [KAPT]
 
-https://github.com/28dhs01/jokes/assets/75385295/8e4defba-1b80-4949-b885-09d412063a27
+## Getting Started
+1. Visit [Jokes Api](https://sv443.net/jokeapi/v2/) to learn about the api used for this project.
+2. Video Deomo is attached below
+   
+ https://github.com/28dhs01/jokes/assets/75385295/8e4defba-1b80-4949-b885-09d412063a27
