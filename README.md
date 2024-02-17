@@ -17,6 +17,7 @@ It includes the following popular libraries:
 
 ## USP 
   - Caching Support
+  - UI build on Jetpack Compose
   
 
 ## Annotation Processing
