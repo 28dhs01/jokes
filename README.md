@@ -14,6 +14,9 @@ It includes the following popular libraries:
 - [Retrofit](https://github.com/square/retrofit) - A type-safe HTTP client for Android and the JVM.
   
 - [Moshi](https://github.com/square/moshi) - A modern JSON library for Kotlin and Java.
+
+## USP 
+  - Caching Support
   
 
 ## Annotation Processing
