@@ -1,6 +1,8 @@
 package com.dhruv.jokes.utils
 
 import android.content.Context
+import android.view.SoundEffectConstants
+import android.view.View
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -10,6 +12,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -47,6 +50,10 @@ fun ErrorMessage(error: String){
     )
 }
 
+fun addSoundEffect(view:View){
+    view.playSoundEffect(SoundEffectConstants.CLICK)
+}
+
 fun toastMsg(context: Context, msg: String){
     Toast.makeText(context,msg, Toast.LENGTH_SHORT).show()
 }
@@ -58,4 +65,11 @@ fun LoadIndicator(modifier: Modifier = Modifier) {
 @Composable
 fun VerticalSpacer(height: Dp = 4.dp){
     Spacer(modifier = Modifier.height(height = height))
+}
+
+@Composable
+fun DismissButton(onClick: ()->Unit){
+    OutlinedButton(onClick = onClick){
+        Text(text = "Dismiss")
+    }
 }

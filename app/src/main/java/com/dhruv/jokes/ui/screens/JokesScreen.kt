@@ -1,5 +1,7 @@
 package com.dhruv.jokes.ui.screens
 
+import android.view.SoundEffectConstants
+import android.view.View
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.TweenSpec
@@ -38,6 +40,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -47,6 +50,7 @@ import com.dhruv.jokes.ui.viewmodel.JokesViewModel
 import com.dhruv.jokes.utils.CustomRowWith2Values
 import com.dhruv.jokes.utils.ErrorMessage
 import com.dhruv.jokes.utils.LoadIndicator
+import com.dhruv.jokes.utils.addSoundEffect
 import com.dhruv.jokes.utils.toastMsg
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -180,6 +184,7 @@ fun JokesScreen(
 
 @Composable
 fun JokeItem(joke: JokesEntity,jokePressed: (JokesEntity)->Unit = {}, updateBookmark: (Boolean) -> Unit) {
+    val view: View = LocalView.current
     if (joke.type == "single") {
         joke.joke?.let {
             Card(
@@ -187,6 +192,7 @@ fun JokeItem(joke: JokesEntity,jokePressed: (JokesEntity)->Unit = {}, updateBook
                     .padding(16.dp)
                     .fillMaxWidth()
                     .clickable {
+                        addSoundEffect(view)
                         jokePressed(joke)
                     }
             ) {
@@ -201,6 +207,7 @@ fun JokeItem(joke: JokesEntity,jokePressed: (JokesEntity)->Unit = {}, updateBook
                         value2 = joke.joke
                     )
                     IconToggleButton(checked = joke.isBookmarked, onCheckedChange = { value ->
+                        addSoundEffect(view = view)
                         updateBookmark(value)
                     }) {
                         Icon(
@@ -220,6 +227,7 @@ fun JokeItem(joke: JokesEntity,jokePressed: (JokesEntity)->Unit = {}, updateBook
                     .padding(16.dp)
                     .fillMaxWidth()
                     .clickable {
+                        view.playSoundEffect(SoundEffectConstants.CLICK)
                         jokePressed(joke)
                     }
             ) {
@@ -235,6 +243,7 @@ fun JokeItem(joke: JokesEntity,jokePressed: (JokesEntity)->Unit = {}, updateBook
                         }
                     }
                     IconToggleButton(checked = joke.isBookmarked, onCheckedChange = { value ->
+                        view.playSoundEffect(SoundEffectConstants.CLICK)
                         updateBookmark(value)
                     }) {
                         Icon(

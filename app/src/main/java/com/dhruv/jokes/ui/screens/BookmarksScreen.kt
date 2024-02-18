@@ -2,6 +2,7 @@ package com.dhruv.jokes.ui.screens
 
 
 import android.content.Intent
+import android.view.View
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.animateColorAsState
@@ -34,7 +35,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -43,14 +43,17 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.dhruv.jokes.ui.viewmodel.JokesViewModel
+import com.dhruv.jokes.utils.DismissButton
 import com.dhruv.jokes.utils.ErrorMessage
 import com.dhruv.jokes.utils.LoadIndicator
 import com.dhruv.jokes.utils.VerticalSpacer
+import com.dhruv.jokes.utils.addSoundEffect
 import com.dhruv.jokes.utils.toastMsg
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -66,7 +69,6 @@ fun BookmarksScreen(
     var jokeToShare by rememberSaveable {
         mutableStateOf("")
     }
-    var coroutineScope = rememberCoroutineScope()
     LaunchedEffect(key1 = Unit) {
         viewModel.getBookmarksOnly()
     }
@@ -161,7 +163,7 @@ fun BookmarksScreen(
                                 jokeToShare = if (joke.type == "single") {
                                     "Joke: ${joke.joke}"
                                 } else {
-                                    "Setup: ${joke.setup} \n Punchline: ${joke.punchline}"
+                                    "Setup: ${joke.setup} \nPunchline: ${joke.punchline}"
                                 }
                                 showBottomSheet = true
                             }) { isBookmarked ->
@@ -178,6 +180,7 @@ fun BookmarksScreen(
     }
     val shareLauncher =
         rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { }
+    val view: View = LocalView.current
     if (showBottomSheet) {
         ModalBottomSheet(
             onDismissRequest = {
@@ -205,15 +208,17 @@ fun BookmarksScreen(
                     horizontalArrangement = Arrangement.SpaceEvenly,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    OutlinedButton(onClick = { showBottomSheet = false }) {
-                        Text(text = "Dismiss")
+                    DismissButton {
+                        addSoundEffect(view)
+                        showBottomSheet = false
                     }
                     OutlinedButton(onClick = {
+                        addSoundEffect(view)
                         val intent = Intent(Intent.ACTION_SEND).apply {
                             type = "text/plain"
                             putExtra(Intent.EXTRA_TEXT, jokeToShare)
                         }
-                        val chooser = Intent.createChooser(intent, "Share message via...")
+                        val chooser = Intent.createChooser(intent, "Share joke via...")
                         shareLauncher.launch(chooser)
                     }) {
                         Text(text = "Share")

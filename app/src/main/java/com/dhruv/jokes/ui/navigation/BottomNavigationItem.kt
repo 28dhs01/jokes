@@ -1,5 +1,6 @@
-package com.dhruv.jokes.ui.destinations
+package com.dhruv.jokes.ui.navigation
 
+import android.view.View
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -8,7 +9,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Menu
 import androidx.compose.material.icons.outlined.Notifications
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.BottomAppBar
@@ -25,8 +25,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Outline
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
@@ -34,8 +34,9 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.rememberNavController
 import com.dhruv.jokes.R
-import com.dhruv.jokes.ui.navigation.AppNavigation
+import com.dhruv.jokes.ui.destinations.TopLevelDestination
 import com.dhruv.jokes.ui.viewmodel.JokesViewModel
+import com.dhruv.jokes.utils.addSoundEffect
 import com.dhruv.jokes.utils.toastMsg
 
 data class BottomNavigationItem(
@@ -55,7 +56,7 @@ fun BottomNavigation(
         mutableIntStateOf(0)
     }
     val navController = rememberNavController()
-
+    val view: View = LocalView.current
     Scaffold(
         topBar = {
             val context = LocalContext.current
@@ -67,6 +68,7 @@ fun BottomNavigation(
                     Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
                         Icon(
                             modifier = Modifier.clickable {
+                                addSoundEffect(view)
                                 toastMsg(context, "feature will be added soon")
                             },
                             imageVector = Icons.Outlined.Notifications,
@@ -74,6 +76,7 @@ fun BottomNavigation(
                         )
                         Icon(
                             modifier = Modifier.clickable {
+                                addSoundEffect(view)
                                 toastMsg(context, "feature will be added soon")
                             },
                             imageVector = Icons.Outlined.Search,
@@ -98,6 +101,7 @@ fun BottomNavigation(
                         label = { Text(text = bottomItem.title) },
                         selected = index == selectedIndex,
                         onClick = {
+                            addSoundEffect(view)
                             navController.popBackStack()
                             selectedIndex = index
                             if (selectedIndex == 1) {

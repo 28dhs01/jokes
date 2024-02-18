@@ -6,7 +6,6 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
 import com.dhruv.jokes.ui.destinations.TopLevelDestination
 import com.dhruv.jokes.ui.screens.BookmarksScreen
 import com.dhruv.jokes.ui.screens.DeleteScreen

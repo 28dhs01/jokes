@@ -5,12 +5,8 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.Home
-import com.dhruv.jokes.ui.destinations.BottomNavigation
-import com.dhruv.jokes.ui.destinations.BottomNavigationItem
-import com.dhruv.jokes.ui.navigation.AppNavigation
+import com.dhruv.jokes.ui.navigation.BottomNavigation
+import com.dhruv.jokes.ui.navigation.BottomNavigationItem
 import com.dhruv.jokes.ui.theme.JokesTheme
 import com.dhruv.jokes.ui.viewmodel.JokesViewModel
 import dagger.hilt.android.AndroidEntryPoint
