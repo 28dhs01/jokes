@@ -36,7 +36,7 @@ class JokesRepoImpl @Inject constructor(private val apiService: ApiService,priva
         jokesDb.jokesDao().updateBookmark(jokeId = id, isBookmarked = bookmarked)
     }
 
-    override suspend fun getBookmarksOnly(): Flow<List<JokesEntity>> {
+    override fun getBookmarksOnly(): Flow<List<JokesEntity>> {
         return jokesDb.jokesDao().getBookmarksOnly()
     }
 
