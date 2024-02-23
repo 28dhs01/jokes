@@ -16,7 +16,7 @@ interface JokesDao {
     suspend fun insertJokesList(jokesEntity: List<JokesEntity>)
 
     @Query("Select * from jokes_entity")
-    fun getJokesList(): Flow<List<JokesEntity>>
+    fun fetchAllJokesList(): Flow<List<JokesEntity>>
 
     @Query(" Update jokes_entity set isBookmarked = :isBookmarked where id = :jokeId")
     suspend fun updateBookmarkStatus(jokeId: Int, isBookmarked: Boolean)
@@ -24,7 +24,7 @@ interface JokesDao {
     @Query ("Select * from jokes_entity where isBookmarked = 1 order by id desc")
     fun fetchBookmarkedJokes(): Flow<List<JokesEntity>>
 
-    @Query("Select * from jokes_entity where isBookmarked = 0 order by id desc")
+    @Query("Select * from jokes_entity  where isBookmarked = 0 order by id desc limit 50")
     fun fetchUnbookmarkedJokes(): Flow<List<JokesEntity>>
 
     @Query("Delete from jokes_entity where id = :id")

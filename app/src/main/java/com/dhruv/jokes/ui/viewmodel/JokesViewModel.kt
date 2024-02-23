@@ -24,7 +24,7 @@ class JokesViewModel @Inject constructor(private val jokesRepo: JokesRepo): View
         debugLog("view model created")
         fetchUnbookmarkedJokes()
     }
-    private fun fetchUnbookmarkedJokes(genre: String = "Programming", amount: Int = 10) {
+    private fun fetchUnbookmarkedJokes(genre: String = "Any", amount: Int = 10) {
         viewModelScope.launch {
             _homeUIstate.value = UIstate.Loading
             try {
