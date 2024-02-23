@@ -9,7 +9,7 @@ import retrofit2.http.Query
 interface ApiService {
 
     @GET("joke/{genre}")
-    suspend fun getJokes(
+    suspend fun fetchAllJokes(
         @Path ("genre") genre: String ,
         @Query ("amount") amount: Int
     ): Response<JokesResponse>

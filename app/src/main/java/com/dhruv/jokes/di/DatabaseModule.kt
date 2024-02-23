@@ -2,6 +2,7 @@ package com.dhruv.jokes.di
 
 import android.content.Context
 import androidx.room.Room
+import com.dhruv.jokes.data.local.JokesDao
 import com.dhruv.jokes.data.local.JokesDb
 import dagger.Module
 import dagger.Provides
@@ -20,6 +21,11 @@ class DatabaseModule {
             JokesDb::class.java,
             "my-database"
         ).build()
+    }
+
+    @Provides
+    fun getDao(jokesDb :JokesDb): JokesDao {
+        return jokesDb.dao
     }
 }
 

@@ -96,7 +96,7 @@ fun BookmarksScreen(
         }
 
         is UiState.Success -> {
-            if (jokesUiState.jokes.isEmpty()) {
+            if (jokesUiState.unbookmarkedJokes.isEmpty()) {
                 Column(
                     modifier = Modifier.fillMaxSize(),
                     horizontalAlignment = Alignment.CenterHorizontally,
@@ -106,7 +106,7 @@ fun BookmarksScreen(
                 }
             } else {
                 LazyColumn(modifier = modifier) {
-                    items(jokesUiState.jokes, key = { joke ->
+                    items(jokesUiState.unbookmarkedJokes, key = { joke ->
                         joke.id
                     }) { joke ->
                         val context = LocalContext.current
@@ -159,9 +159,9 @@ fun BookmarksScreen(
                                 }
                             }
                         ) {
-                            JokeItem(joke = joke, jokePressed = { joke ->
+                            JokeItem(unbookmarkedJoke = joke, jokePressed = { joke ->
                                 jokeToShare = if (joke.type == "single") {
-                                    "Joke: ${joke.joke}"
+                                    "Joke: ${joke.jokeMessage}"
                                 } else {
                                     "Setup: ${joke.setup} \nPunchline: ${joke.punchline}"
                                 }

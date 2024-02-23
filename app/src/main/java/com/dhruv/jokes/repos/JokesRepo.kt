@@ -5,7 +5,7 @@ import kotlinx.coroutines.flow.Flow
 
 
 interface JokesRepo {
-    suspend fun getJokes(genre: String,amount: Int): Flow<List<JokesEntity>>
+    suspend fun fetchUnbookmarkedJokes(genre: String, amount: Int): Flow<List<JokesEntity>>
     suspend fun updateBookmark(id: Int, bookmarked: Boolean)
     fun getBookmarksOnly(): Flow<List<JokesEntity>>
     suspend fun deleteUnbookmarkedJokes()

@@ -14,25 +14,25 @@ import javax.inject.Inject
 @HiltViewModel
 class JokesViewModel @Inject constructor(private val jokesRepo: JokesRepo): ViewModel() {
 
-    private val _jokes: MutableStateFlow<UiState> = MutableStateFlow(UiState.Initial)
-    val jokes = _jokes.asStateFlow()
+    private val _uiState: MutableStateFlow<UiState> = MutableStateFlow(UiState.Initial)
+    val uiState = _uiState.asStateFlow()
 
     private val _bookmarkedJokes: MutableStateFlow<UiState> = MutableStateFlow(UiState.Initial)
     val bookmarkedJokes = _bookmarkedJokes.asStateFlow()
 
     init{
         debugLog("view model created")
-        getJokes()
+        fetchUnbookmarkedJokes()
     }
-    private fun getJokes(genre: String = "Programming", amount: Int = 10) {
+    private fun fetchUnbookmarkedJokes(genre: String = "Programming", amount: Int = 10) {
         viewModelScope.launch {
-            _jokes.value = UiState.Loading
+            _uiState.value = UiState.Loading
             try {
-               jokesRepo.getJokes(genre = genre, amount = amount).collect{jokesList->
-                    _jokes.value = UiState.Success(jokesList)
+               jokesRepo.fetchUnbookmarkedJokes(genre = genre, amount = amount).collect{ jokesList->
+                    _uiState.value = UiState.Success(jokesList)
                 }
             }catch (e: Exception){
-                _jokes.value = UiState.Error(e.message.toString())
+                _uiState.value = UiState.Error(e.message.toString())
                 debugLog(e.message.toString())
             }
         }
@@ -49,7 +49,7 @@ class JokesViewModel @Inject constructor(private val jokesRepo: JokesRepo): View
         viewModelScope.launch {
                 try {
                 jokesRepo.getBookmarksOnly().collect{jokesList->
-                    _bookmarkedJokes.value = UiState.Success(jokes = jokesList)
+                    _bookmarkedJokes.value = UiState.Success(unbookmarkedJokes = jokesList)
                 }
             } catch (e: Exception) {
                 _bookmarkedJokes.value = UiState.Error(e.message.toString())

@@ -1,16 +1,16 @@
 package com.dhruv.jokes.repos
 
-import com.dhruv.jokes.data.local.JokesDb
+import com.dhruv.jokes.data.local.JokesDao
 import com.dhruv.jokes.data.local.JokesEntity
 import com.dhruv.jokes.data.remote.ApiService
 import com.dhruv.jokes.utils.debugLog
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class JokesRepoImpl @Inject constructor(private val apiService: ApiService,private val jokesDb: JokesDb) : JokesRepo {
-    override suspend fun getJokes(genre: String, amount: Int): Flow<List<JokesEntity>> {
+class JokesRepoImpl @Inject constructor(private val apiService: ApiService,private val jokesDao: JokesDao) : JokesRepo {
+    override suspend fun fetchUnbookmarkedJokes(genre: String, amount: Int): Flow<List<JokesEntity>> {
         try {
-            val response = apiService.getJokes(genre = genre, amount = amount)
+            val response = apiService.fetchAllJokes(genre = genre, amount = amount)
             val jokesResponse = response.body()
 
             if (response.isSuccessful && jokesResponse != null) {
@@ -20,31 +20,31 @@ class JokesRepoImpl @Inject constructor(private val apiService: ApiService,priva
                         type = joke.type,
                         setup = joke.setup,
                         punchline = joke.punchline,
-                        joke = joke.joke
+                        jokeMessage = joke.joke
                     )
                 }
-                jokesDb.jokesDao().insertJokesList(jokesEntityList)
+                jokesDao.insertJokesList(jokesEntityList)
 
             }
         } catch (e: Exception) {
             debugLog(e.message.toString())
         }
-        return jokesDb.jokesDao().getJokesList()
+        return jokesDao.fetchUnbookmarkedJokes()
     }
 
     override suspend fun updateBookmark(id: Int, bookmarked: Boolean) {
-        jokesDb.jokesDao().updateBookmark(jokeId = id, isBookmarked = bookmarked)
+        jokesDao.updateBookmark(jokeId = id, isBookmarked = bookmarked)
     }
 
     override fun getBookmarksOnly(): Flow<List<JokesEntity>> {
-        return jokesDb.jokesDao().getBookmarksOnly()
+        return jokesDao.getBookmarksOnly()
     }
 
     override suspend fun deleteUnbookmarkedJokes() {
-        jokesDb.jokesDao().deleteUnbookmarkedJokes()
+        jokesDao.deleteUnbookmarkedJokes()
     }
 
     override suspend fun deleteJoke(id: Int) {
-        jokesDb.jokesDao().deleteJoke(id)
+        jokesDao.deleteJoke(id)
     }
 }
