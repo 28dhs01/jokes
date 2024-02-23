@@ -55,9 +55,9 @@ fun JokesScreen(
     modifier: Modifier = Modifier,
     viewModel: JokesViewModel = hiltViewModel()
 ) {
-    val uiState by viewModel.uiState.collectAsState()
-    when (uiState) {
-        is UiState.Loading -> {
+    val homeUiState by viewModel.homeUiState.collectAsState()
+    when (homeUiState) {
+        is UIstate.Loading -> {
             Column(
                 modifier = modifier,
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -67,19 +67,20 @@ fun JokesScreen(
             }
         }
 
-        is UiState.Error -> {
+        is UIstate.Error -> {
             Column(
                 modifier = modifier,
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
-                val error = (uiState as UiState.Error).message
+                val error = (homeUiState as UIstate.Error).message
                 ErrorMessage(error = error)
             }
         }
 
-        is UiState.Success -> {
-            if ((uiState as UiState.Success).unbookmarkedJokes.isEmpty()) {
+        is UIstate.Success -> {
+            val successState = homeUiState as UIstate.Success
+            if (successState.jokesList.isEmpty()) {
                 Column(
                     modifier = Modifier.fillMaxSize(),
                     horizontalAlignment = Alignment.CenterHorizontally,
@@ -89,7 +90,7 @@ fun JokesScreen(
                 }
             } else {
                 LazyColumn(modifier = modifier) {
-                    items((uiState as UiState.Success).unbookmarkedJokes, key = { joke ->
+                    items(successState.jokesList, key = { joke ->
                         joke.id
                     }) { joke ->
                         val context = LocalContext.current

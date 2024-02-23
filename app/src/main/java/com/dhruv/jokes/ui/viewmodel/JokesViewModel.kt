@@ -3,7 +3,7 @@ package com.dhruv.jokes.ui.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dhruv.jokes.repos.JokesRepo
-import com.dhruv.jokes.ui.screens.UiState
+import com.dhruv.jokes.ui.screens.UIstate
 import com.dhruv.jokes.utils.debugLog
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,11 +14,11 @@ import javax.inject.Inject
 @HiltViewModel
 class JokesViewModel @Inject constructor(private val jokesRepo: JokesRepo): ViewModel() {
 
-    private val _uiState: MutableStateFlow<UiState> = MutableStateFlow(UiState.Initial)
-    val uiState = _uiState.asStateFlow()
+    private val _homeUIstate: MutableStateFlow<UIstate> = MutableStateFlow(UIstate.Initial)
+    val homeUiState = _homeUIstate.asStateFlow()
 
-    private val _bookmarkedJokes: MutableStateFlow<UiState> = MutableStateFlow(UiState.Initial)
-    val bookmarkedJokes = _bookmarkedJokes.asStateFlow()
+    private val _bookmarkUIstate: MutableStateFlow<UIstate> = MutableStateFlow(UIstate.Initial)
+    val bookmarkUiState = _bookmarkUIstate.asStateFlow()
 
     init{
         debugLog("view model created")
@@ -26,13 +26,13 @@ class JokesViewModel @Inject constructor(private val jokesRepo: JokesRepo): View
     }
     private fun fetchUnbookmarkedJokes(genre: String = "Programming", amount: Int = 10) {
         viewModelScope.launch {
-            _uiState.value = UiState.Loading
+            _homeUIstate.value = UIstate.Loading
             try {
                jokesRepo.fetchUnbookmarkedJokes(genre = genre, amount = amount).collect{ jokesList->
-                    _uiState.value = UiState.Success(jokesList)
+                    _homeUIstate.value = UIstate.Success(jokesList)
                 }
             }catch (e: Exception){
-                _uiState.value = UiState.Error(e.message.toString())
+                _homeUIstate.value = UIstate.Error(e.message.toString())
                 debugLog(e.message.toString())
             }
         }
@@ -45,14 +45,14 @@ class JokesViewModel @Inject constructor(private val jokesRepo: JokesRepo): View
     }
 
     fun getBookmarksOnly() {
-        _bookmarkedJokes.value = UiState.Loading
+        _bookmarkUIstate.value = UIstate.Loading
         viewModelScope.launch {
                 try {
                 jokesRepo.getBookmarksOnly().collect{jokesList->
-                    _bookmarkedJokes.value = UiState.Success(unbookmarkedJokes = jokesList)
+                    _bookmarkUIstate.value = UIstate.Success(jokesList = jokesList)
                 }
             } catch (e: Exception) {
-                _bookmarkedJokes.value = UiState.Error(e.message.toString())
+                _bookmarkUIstate.value = UIstate.Error(e.message.toString())
             }
         }
     }

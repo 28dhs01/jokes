@@ -72,9 +72,9 @@ fun BookmarksScreen(
     LaunchedEffect(key1 = Unit) {
         viewModel.getBookmarksOnly()
     }
-    val jokesUiState = viewModel.bookmarkedJokes.collectAsState().value
-    when (jokesUiState) {
-        is UiState.Loading -> {
+    val bookmarkUiState by viewModel.bookmarkUiState.collectAsState()
+    when (bookmarkUiState) {
+        is UIstate.Loading -> {
             Column(
                 modifier = modifier,
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -84,19 +84,20 @@ fun BookmarksScreen(
             }
         }
 
-        is UiState.Error -> {
+        is UIstate.Error -> {
             Column(
                 modifier = modifier,
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
-                val error = jokesUiState.message
+                val error = (bookmarkUiState as UIstate.Error).message
                 ErrorMessage(error = error)
             }
         }
 
-        is UiState.Success -> {
-            if (jokesUiState.unbookmarkedJokes.isEmpty()) {
+        is UIstate.Success -> {
+            val successState = bookmarkUiState as UIstate.Success
+            if (successState.jokesList.isEmpty()) {
                 Column(
                     modifier = Modifier.fillMaxSize(),
                     horizontalAlignment = Alignment.CenterHorizontally,
@@ -106,7 +107,7 @@ fun BookmarksScreen(
                 }
             } else {
                 LazyColumn(modifier = modifier) {
-                    items(jokesUiState.unbookmarkedJokes, key = { joke ->
+                    items(successState.jokesList, key = { joke ->
                         joke.id
                     }) { joke ->
                         val context = LocalContext.current
