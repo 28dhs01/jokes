@@ -99,12 +99,12 @@ fun JokesScreen(
                             when (dismissState.currentValue) {
                                 SwipeToDismissBoxValue.EndToStart -> {
                                     toastMsg(context = context, msg = "Joke Deleted")
-                                    viewModel.deleteJoke(joke.id)
+                                    viewModel.deleteJokeViaId(joke.id)
                                 }
 
                                 SwipeToDismissBoxValue.StartToEnd -> {
                                     toastMsg(context = context, msg = "Joke Bookmarked")
-                                    viewModel.updateBookmark(id = joke.id, bookmarked = true)
+                                    viewModel.updateBookmarkStatus(id = joke.id, bookmarked = true)
                                 }
 
                                 else -> {}
@@ -115,7 +115,7 @@ fun JokesScreen(
                         }
                         ) {
                             JokeItem(unbookmarkedJoke = joke) { isBookmarked ->
-                                viewModel.updateBookmark(joke.id, isBookmarked)
+                                viewModel.updateBookmarkStatus(joke.id, isBookmarked)
                                 toastMsg(context = context, msg = "Joke Bookmarked")
                             }
 

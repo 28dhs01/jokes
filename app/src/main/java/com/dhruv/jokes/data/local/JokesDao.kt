@@ -19,16 +19,16 @@ interface JokesDao {
     fun getJokesList(): Flow<List<JokesEntity>>
 
     @Query(" Update jokes_entity set isBookmarked = :isBookmarked where id = :jokeId")
-    suspend fun updateBookmark(jokeId: Int, isBookmarked: Boolean)
+    suspend fun updateBookmarkStatus(jokeId: Int, isBookmarked: Boolean)
 
     @Query ("Select * from jokes_entity where isBookmarked = 1 order by id desc")
-    fun getBookmarksOnly(): Flow<List<JokesEntity>>
+    fun fetchBookmarkedJokes(): Flow<List<JokesEntity>>
 
     @Query("Select * from jokes_entity where isBookmarked = 0 order by id desc")
     fun fetchUnbookmarkedJokes(): Flow<List<JokesEntity>>
 
     @Query("Delete from jokes_entity where id = :id")
-    suspend fun deleteJoke(id: Int)
+    suspend fun deleteJokeViaId(id: Int)
 
     @Query("Delete from jokes_entity where isBookmarked = 0")
     suspend fun deleteUnbookmarkedJokes()

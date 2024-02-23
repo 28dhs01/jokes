@@ -70,7 +70,7 @@ fun BookmarksScreen(
         mutableStateOf("")
     }
     LaunchedEffect(key1 = Unit) {
-        viewModel.getBookmarksOnly()
+        viewModel.fetchBookmarkedJokes()
     }
     val bookmarkUiState by viewModel.bookmarkUiState.collectAsState()
     when (bookmarkUiState) {
@@ -116,7 +116,7 @@ fun BookmarksScreen(
                             when (dismissState.currentValue) {
                                 SwipeToDismissBoxValue.EndToStart -> {
                                     toastMsg(context = context, msg = "Joke Deleted")
-                                    viewModel.deleteJoke(joke.id)
+                                    viewModel.deleteJokeViaId(joke.id)
                                 }
 
                                 else -> {}
@@ -169,7 +169,7 @@ fun BookmarksScreen(
                                 showBottomSheet = true
                             }) { isBookmarked ->
                                 toastMsg(context = context, msg = "Joke Unbookmarked")
-                                viewModel.updateBookmark(joke.id, isBookmarked)
+                                viewModel.updateBookmarkStatus(joke.id, isBookmarked)
                             }
                         }
                     }

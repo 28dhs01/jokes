@@ -38,17 +38,17 @@ class JokesViewModel @Inject constructor(private val jokesRepo: JokesRepo): View
         }
     }
 
-    fun updateBookmark(id: Int, bookmarked: Boolean) {
+    fun updateBookmarkStatus(id: Int, bookmarked: Boolean) {
         viewModelScope.launch {
-            jokesRepo.updateBookmark(id, bookmarked)
+            jokesRepo.updateBookmarkStatus(id, bookmarked)
         }
     }
 
-    fun getBookmarksOnly() {
+    fun fetchBookmarkedJokes() {
         _bookmarkUIstate.value = UIstate.Loading
         viewModelScope.launch {
                 try {
-                jokesRepo.getBookmarksOnly().collect{jokesList->
+                jokesRepo.fetchBookmarkedJokes().collect{ jokesList->
                     _bookmarkUIstate.value = UIstate.Success(jokesList = jokesList)
                 }
             } catch (e: Exception) {
@@ -67,10 +67,10 @@ class JokesViewModel @Inject constructor(private val jokesRepo: JokesRepo): View
         }
     }
 
-    fun deleteJoke(id: Int){
+    fun deleteJokeViaId(id: Int){
         viewModelScope.launch {
             try {
-                jokesRepo.deleteJoke(id = id)
+                jokesRepo.deleteJokeViaId(id = id)
             } catch (e: Exception) {
                 debugLog("Error to delete joke with id $id with msg ${e.message}")
             }
